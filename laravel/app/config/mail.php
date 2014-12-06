@@ -28,7 +28,8 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	//'host' => 'smtp.mailgun.org',
+	'host' => '192.168.1.35',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +42,8 @@ return array(
 	|
 	*/
 
-	'port' => 587,
+	//'port' => 587,
+	'port' => 25,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +56,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array('address' => 'marcos.visualnt@gmail.com', 'name' => 'Marcos Name'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,8 +69,8 @@ return array(
 	|
 	*/
 
-	'encryption' => 'tls',
-
+	//'encryption' => 'tls',
+'encryption' => null,
 	/*
 	|--------------------------------------------------------------------------
 	| SMTP Server Username

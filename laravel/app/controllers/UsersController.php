@@ -31,69 +31,69 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 
-		{
-		/*echo '<pre>';
-		print_r(Input::all());
-		die();
-*/
+	{
+		
 		$validator = Validator::make($data = Input::all(), User::$rules);
 
 		if ($validator->fails())
 		{
 			return Redirect::back()->withErrors($validator,'createuser')->withInput();
 		}
-
-		/*echo 'todo ok ';
-		die();*/
-
-		// apartir de aqui creamos usuario:
-
-        if(Input::file('avatar')->isValid()) {
-        	$extension = Input::file('avatar')->getClientOriginalExtension();
-					
-				$name_file = md5(Input::get('email')).'.'.$extension;
-				
-				$path = 'uploads/'.date('Y').'/'.date('m').'/';
-				
-				//Subimos la imagen
-				Input::file('avatar')->move($path,$name_file); 
-				
-				//Escalamos la imagen a 150px de ancho
-				$img = Image::make($path.$name_file);
-				
-				$img->resize(150, null, function ($constraint) {
-					
-				    $constraint->aspectRatio();
-				    
-				})->save();
-			//die();
-
+		
+		if(Input::file('avatar')->isValid()) {
+			
+			$avatar_url = $this->uploadAvatar();
 
 			$user = Sentry::register(array(
 		        'email'    	=> Input::get('email'),
 		        'password' 	=> Input::get('password'),
 		        'first_name' => Input::get('first_name'),
 		        'last_name' => Input::get('last_name'),
-		        'avatar' 	=> $path.$name_file,
+		        'avatar' 	=> $avatar_url,
 		    ));
 		    
-		   // let's get the activation code
-			 $activationCode = $user->getActivationCode();
-		   //$this->sendEmail($user);
+		   $this->sendEmail($user);
 		   
-		   //die();
 
 		}
 		
-		return Redirect::route('users.index');
+		return Redirect::to('login');
+		
+		
+	}
+	
+	private function uploadAvatar(){
+		
+		$extension = Input::file('avatar')->getClientOriginalExtension();
+			
+		$name_file = md5(Input::get('email')).'.'.$extension;
+		
+		$path = 'uploads/'.date('Y').'/'.date('m').'/';
+		
+		//Subimos la imagen
+		Input::file('avatar')->move($path,$name_file); 
+		
+		//Escalamos la imagen a 150px de ancho
+		$img = Image::make($path.$name_file);
+		
+		$img->resize(150, null, function ($constraint) {
+			
+		    $constraint->aspectRatio();
+		    
+		})->save();
+		
+		return $path.$name_file;
+		
+	}
 
-
-
-
-
-		//User::create($data);
-
-		//return Redirect::route('users.index');
+	private function sendEmail($user){
+		
+		Mail::send('emails.activation', array('code' => $user->getActivationCode(), 'user_id' => $user->id), 
+		function($message) use ($user)
+		{
+		    $message->to($user->email, $user->first_name)->subject('Activate!');
+		});
+		
 	}
 
 	/**

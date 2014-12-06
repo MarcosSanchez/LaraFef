@@ -11,7 +11,36 @@
 |
 */
 
+
+//=============
+//! Frontend 
+//=============
+
+
 Route::get('/', function()
 {
-	return View::make('hello');
+	//return View::make('home');
+});
+
+Route::get('/register', 'HomeController@register');
+
+Route::get('/login', 'HomeController@login');
+
+//Route::get('activation/{user_id}/{code}', 'HomeController@activateUser');
+
+
+//============
+//! Backend 
+//============
+
+
+Route::group(array('prefix' => 'admin'), function()
+{
+
+	Route::resource('users', 'UsersController');
+	
+	Route::resource('pages', 'PagesController');
+	
+	Route::resource('blogs', 'BlogsController');
+
 });

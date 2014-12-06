@@ -96,7 +96,7 @@ return array(
 		*/
 
 		//'model' => 'Cartalyst\Sentry\Groups\Eloquent\Group',
-		'model'= 'users',
+		'model'=> 'users',
 
 	),
 

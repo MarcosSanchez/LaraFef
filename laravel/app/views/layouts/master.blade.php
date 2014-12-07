@@ -27,26 +27,26 @@
 
   <body>
 
-    <div class="navbar navbar-inverse" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Mi proyecto en Clase</a> 
-         
-          @if(Auth::check()) 
-          	<a class="btn btn-primary" href="{{ URL::to('logout') }}">Logout</a>
-          @endif
-          	
-          	
+          <a class="navbar-brand" href="#">Proyecto Curso Laravel </a>
         </div>
-       
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li @if(Request::is('admin/user*')) class="active" @endif><a href="{{ URL::to('admin/users') }}">Usuarios</a></li>
+          <li @if(Request::is('admin/pages*')) class="active" @endif><a href="{{ URL::to('admin/pages') }}">Paginas</a></li>
+            <li><a href="{{ URL::to('logout') }}">Logout</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
 
 	<div class="container">
     @yield('content')

@@ -179,7 +179,7 @@ class UsersController extends \BaseController {
 			$avatar = array('avatar' => $this->uploadAvatar());
 		
 		}
-
+// suma de arrays 
 		$user->update(Input::except('avatar') + $avatar);
 
 		return Redirect::to('admin/users')->with('message','Usuario '.$user->id.' actualizado');

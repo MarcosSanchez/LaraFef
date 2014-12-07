@@ -17,6 +17,9 @@ class HomeController extends BaseController {
 	
 	public function pageView($slug = null)
 	{
+		/*echo 'hola';
+		echo $slug;*/
+
 		
 		$pages = Page::all();
 		

@@ -17,16 +17,21 @@
 //=============
 
 
-Route::get('/', function()
+/*Route::get('/', function()
 {
 	//return View::make('home');
-});
+});*/
+Route::get('/', 'HomeController@pageView');
+
+
 
 Route::get('/register', 'HomeController@register');
 
 Route::get('/login', 'HomeController@login');
 Route::post('login', 'HomeController@loginPost');
 Route::get('logout', 'HomeController@logout');
+
+Route::get('{slug}', 'HomeController@pageView');
 
 
 

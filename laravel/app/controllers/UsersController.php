@@ -10,8 +10,23 @@ class UsersController extends \BaseController {
 	public function index()
 	{
 		$users = User::all();
+				   
+		
+		
+		/*$contacts = Contact::all(); 
 
-		return View::make('users.index', compact('users'));
+		    echo '<pre>';
+	        var_export($contacts);
+	        die();*/
+        
+        /*echo '<pre>';
+		print_r(Sentry::getUser());
+		die();*/
+
+		$current_user = Sentry::getUser();
+
+		//return View::make('users.index', compact('users','current_user','contacts'));
+		return View::make('users.index', compact('users','current_user'));
 	}
 
 	/**
@@ -30,10 +45,10 @@ class UsersController extends \BaseController {
 	 * @return Response
 	 */
 	public function store()
-
 	{
 		
-		$validator = Validator::make($data = Input::all(), User::$rules);
+		
+		$validator = Validator::make($data = Input::except('action'), User::$rules);
 
 		if ($validator->fails())
 		{
@@ -56,8 +71,16 @@ class UsersController extends \BaseController {
 		   
 
 		}
-		
-		return Redirect::to('login');
+	/*	echo '<pre>';
+		//print_r(input::all());
+		print_r(Input::get('action'));
+		die();
+	*/	
+		if(Input::get('action'))
+
+			return Redirect::to('admin/users')->with('message','Usuario '.$user->id.' actualizado');
+		else
+			return Redirect::to('login');
 		
 		
 	}
@@ -130,18 +153,36 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
+		$avatar = array();
+		
 		$user = User::findOrFail($id);
+		
+		$rules = User::$rulesEdit;
 
-		$validator = Validator::make($data = Input::all(), User::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
+		if($user->email != Input::get('email')){
+			$rules['email'] = $rules['email'] . '|unique:users';
 		}
 
-		$user->update($data);
+		$validator = Validator::make($data = Input::all(),$rules);
 
-		return Redirect::route('users.index');
+		if ($validator->fails()/* or User::existEmail(Input::get('email'))*/)
+		{
+			
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+		
+		if(File::exists(public_path().'/'.$user->avatar) and Input::hasFile('avatar'))
+		{
+			
+			File::delete(public_path().'/'.$user->avatar);
+			
+			$avatar = array('avatar' => $this->uploadAvatar());
+		
+		}
+
+		$user->update(Input::except('avatar') + $avatar);
+
+		return Redirect::to('admin/users')->with('message','Usuario '.$user->id.' actualizado');
 	}
 
 	/**
@@ -152,9 +193,10 @@ class UsersController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
+		
 		User::destroy($id);
 
-		return Redirect::route('users.index');
+		return Redirect::to('admin/users')->with('message','Usuario '.$id.' actualizado');
 	}
 
 }

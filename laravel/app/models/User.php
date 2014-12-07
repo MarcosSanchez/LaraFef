@@ -17,6 +17,12 @@ class User extends SentryUserModel {
 									'password-repeat'	=>	'required|same:password',
 									'avatar'			=>	'required|mimes:jpeg,bmp,png',
 	);
+	
+	public static $rulesEdit = array('first_name' 		=> 	'required',
+									'last_name'			=>  'required',
+									'email'				=> 	'required|email',
+									'avatar'			=>	'mimes:jpeg,bmp,png',
+	);
 
 	/**
 	 * The database table used by the model.
@@ -31,5 +37,14 @@ class User extends SentryUserModel {
 	 * @var array
 	 */
 	protected $hidden = array('password', 'remember_token');
+	
+	public static function existEmail($email){
+		
+		$user = User::where('email',$email)->first();
+		
+		if(empty($user)) return false;
+		else return true;
+		
+	}
 
 }

@@ -57,7 +57,10 @@
      
     </div> <!-- /container -->
 
-    <!-- Latest compiled and minified JavaScript -->
+    <!-- Latest compiled and minified JavaScript 
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-  </body>
+  -->
+  <script src="{{ asset('js/jquery-1.11.1.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+</body>
 </html>

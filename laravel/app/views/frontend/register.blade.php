@@ -90,9 +90,9 @@
 				
 				{{ Form::password('password-repeat', '', array()) }}
 				
-				@if($errors->createuser->first('password2'))
+				@if($errors->createuser->first('password-repeat'))
 				<span class="label label-danger">
-				{{ $errors->createuser->first('password2') }}
+				{{ $errors->createuser->first('password-repeat') }}
 				</span>
 				@endif
 			

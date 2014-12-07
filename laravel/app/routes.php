@@ -25,6 +25,8 @@ Route::get('/', function()
 Route::get('/register', 'HomeController@register');
 
 Route::get('/login', 'HomeController@login');
+Route::post('login', 'HomeController@loginPost');
+
 
 Route::get('activation/{user_id}/{code}', 'HomeController@activateUser');
 

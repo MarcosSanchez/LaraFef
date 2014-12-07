@@ -14,18 +14,112 @@ class HomeController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
-
-/*	public function showWelcome()
+	
+	public function pageView($slug = null)
 	{
-		return View::make('hello');
+		
+		$pages = Page::all();
+		
+		if(!is_null($slug))
+		
+			$page = Page::where('slug',$slug)->first();
+			
+		else {
+			
+			$page = Page::where('main',1)->first();
+			
+		}
+		
+		if(!empty($page))		
+			return View::make('frontend.custompage',compact('page','pages'));
+		else
+			return View::make('errors.404');		
 	}
-*/
+	
+	public function login()
+	{
+		return View::make('frontend.login');
+	}
+	
+	public function logout()
+	{
+		
+		Sentry::logout();
+		
+		return Redirect::to('login')->with('message','Logout correcto');
+		
+	}
+	
+	public function loginPost(){
+		/*echo '<pre>';
+		//print_r(input::all());
+		print_r(Input::all());
+		die();*/
+		
+		try
+		{
+		    //TO-DO: Validar las credenciales primero 
+		    
+		    $credentials = array(
+		        'email'    => Input::get('email'),
+		        'password' => Input::get('password'),
+		    );
+		
+		    // Authenticate the user
+		    $user = Sentry::authenticate($credentials, false);
+
+		    
+		    if(!empty($user))
+		    {
+			   
+			   return Redirect::route('admin.users.index'); 
+			    
+		    }
+		    
+		    return Redirect::to('login')->withInput()->with('message',$message);
+		
+		}
+		catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
+		{
+		    $message =  'Login field is required.';
+		}
+		catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
+		{
+		    $message =  'Password field is required.';
+		    
+		}
+		catch (Cartalyst\Sentry\Users\WrongPasswordException $e)
+		{
+		    $message =  'Wrong password, try again.';
+		}
+		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+		{
+		    $message =  'User was not found.';
+		}
+		catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
+		{
+		    $message =  'User is not activated.';
+		}
+		
+		// The following is only required if the throttling is enabled
+		catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
+		{
+		    $message =  'User is suspended.';
+		}
+		catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
+		{
+		    $message = 'User is banned.';
+		}
+		
+		return Redirect::to('login')->withInput()->with('message',$message);
+		
+	}
+
 	public function register()
 	{
 		return View::make('frontend.register');
 	}
 	
-
 	public function activateUser($user_id,$code){
 		
 		try {
@@ -58,5 +152,6 @@ class HomeController extends BaseController {
 	    
 	    return View::make('frontend.activation',compact('status'));
 		
-    }
+	}
+
 }

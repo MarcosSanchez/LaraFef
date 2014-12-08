@@ -13,9 +13,9 @@ class UsersController extends \BaseController {
 				   
 		
 		
-		/*$contacts = Contact::all(); 
+		$contacts = Contact::all(); 
 
-		    echo '<pre>';
+		/*    echo '<pre>';
 	        var_export($contacts);
 	        die();*/
         
@@ -25,8 +25,8 @@ class UsersController extends \BaseController {
 
 		$current_user = Sentry::getUser();
 
-		//return View::make('users.index', compact('users','current_user','contacts'));
-		return View::make('users.index', compact('users','current_user'));
+		return View::make('users.index', compact('users','current_user','contacts'));
+		//return View::make('users.index', compact('users','current_user'));
 	}
 
 	/**

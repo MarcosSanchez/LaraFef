@@ -46,7 +46,8 @@
             	<li><a href="{{ URL::to($page->slug) }}">{{ $page->title }}</a></li>
             
             @endforeach
-            
+            <li><a href="{{ URL::to('contacto') }}">Contacto</a></li>
+
             <li><a href="{{ URL::to('login') }}">Admin</a></li>
             
           </ul>

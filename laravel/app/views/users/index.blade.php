@@ -8,7 +8,7 @@
 
 @section('content')
 
-		
+		@include('frontend.contacts');
 		
 		<h1>Login Usuarios</h1>
 	

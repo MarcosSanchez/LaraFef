@@ -39,9 +39,74 @@ class HomeController extends BaseController {
 			return View::make('errors.404');		
 	}
 	
-	public function login()
+///  contacto
+
+	public function contactForm()
 	{
-		return View::make('frontend.login');
+		
+		$pages = Page::all();
+		
+		return View::make('frontend.contact', compact('pages'));
+		
+	}
+
+	// contacto formulario que viene por ajax
+    public function contactFormPost()
+	{
+		
+		if(Request::ajax()) {
+    
+			$validator = Validator::make($data = Input::all('_token'), Contact::$rules);
+			
+			if($validator->passes())
+			{
+				
+				$contact = new Contact;
+				
+				$contact->first_name = Input::get('first_name');
+				
+				$contact->email = Input::get('email');
+				
+				$contact->subject = Input::get('subject');
+				
+				$contact->message = e(strip_tags(Input::get('message')));
+				
+				if($contact->save()){
+					
+					Mail::send('emails.contact', array('data' => Input::all()), 
+					function($message)
+					{
+					    $message->to('pepe@pepito.com')->subject('Tienes un contacto!');
+					});
+					
+					return Response::json(array('success' => 'Mensaje enviado'));
+					
+				} else {
+					
+					return Response::json(array('error' => 'Problema en el envio'));
+					
+				}
+				
+			} else {
+				
+				return Response::json(array('error' => $validator->messages()));
+				
+			}
+		
+		} else {
+			
+			return Response::json(array('Invalid action'));			
+		}
+		
+	}
+	
+
+
+
+/// login 
+	public function login()
+	{$pages = Page::all();
+		return View::make('frontend.login', compact('pages'));
 	}
 	
 	public function logout()

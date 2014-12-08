@@ -25,11 +25,14 @@ Route::get('/', 'HomeController@pageView');
 
 
 
-Route::get('/register', 'HomeController@register');
+Route::get('register', 'HomeController@register');
 
-Route::get('/login', 'HomeController@login');
+Route::get('login', 'HomeController@login');
 Route::post('login', 'HomeController@loginPost');
 Route::get('logout', 'HomeController@logout');
+
+Route::get('contacto', 'HomeController@contactForm');
+Route::post('contacto', 'HomeController@contactFormPost');
 
 Route::get('{slug}', 'HomeController@pageView');
 

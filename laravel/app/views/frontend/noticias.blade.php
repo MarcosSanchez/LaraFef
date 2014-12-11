@@ -1,2 +1,0 @@
-<h1>
-	noticias </h1>

@@ -33,7 +33,7 @@ App::after(function($request, $response)
 |
 */
 
-/*Route::filter('auth', function()
+Route::filter('auth', function()
 {
 	if (Auth::guest())
 	{
@@ -46,17 +46,8 @@ App::after(function($request, $response)
 			return Redirect::guest('login');
 		}
 	}
-});*/
-
-Route::filter('auth', function()
-{
-	// Check if the user is logged in
-	if ( ! Sentry::check())
-	{
-		// Redirect to the login page
-		return Redirect::to('login');
-	}
 });
+
 
 Route::filter('auth.basic', function()
 {

@@ -4,7 +4,7 @@ class Contact extends \Eloquent {
 
 	// Add your validation rules here
 	public static $rules = [
-		 'firs_name' => 'required|min:3',
+		 'first_name' => 'required|min:3',
 		 'email'	=> 'required|email',
 		 'subject' => 'required',
 		 'message' => '',

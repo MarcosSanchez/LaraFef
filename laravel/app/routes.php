@@ -27,7 +27,6 @@ Route::get('/', 'HomeController@pageView');
 
 Route::get('register', 'HomeController@register');
 
-Route::get('login', 'HomeController@login');
 Route::post('login', 'HomeController@loginPost');
 Route::get('logout', 'HomeController@logout');
 
@@ -46,7 +45,17 @@ Route::get('activation/{user_id}/{code}', 'HomeController@activateUser');
 //============
 
 
-Route::group(array('prefix' => 'admin'), function()
+/*Route::group(array('prefix' => 'admin'), function()
+{
+
+	Route::resource('users', 'UsersController');
+	
+	Route::resource('pages', 'PagesController');
+	
+	Route::resource('blogs', 'BlogsController');
+
+});*/
+Route::group(array('prefix' => 'admin', 'before' => 'auth'), function()
 {
 
 	Route::resource('users', 'UsersController');
@@ -56,3 +65,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::resource('blogs', 'BlogsController');
 
 });
+
+/*App::abort(404);			
+return Response::make('Unauthorized', 401);
+*/
